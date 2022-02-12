@@ -6,7 +6,7 @@ def main():
     
 def menu():
     menuMassage = "Welcome to PassGenX!\nPlease select what operation you want to execute:\n    1- Create new Pass\n    2- Encrypt existing Pass\n    3- forgot Pass [ID num required]"
-    operationID = []
+    operationID = ["hehe"]
     
     
     
