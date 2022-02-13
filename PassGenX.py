@@ -19,13 +19,14 @@ def main():
 
    
 def menu():
-    newPassCharNum = 0
-    menuMassage = """Welcome to PassGenX!
+    menuMassage = """
+Welcome to PassGenX!
     Please select what operation do you want to execute:
     1- Create new Pass    
     2- See existing Passwords
     3- Erase Data file
-    4- Exit
+    4- Change ADMIN Password
+    5- Exit
     Your choice: """
     operationID = int(input(menuMassage))
     
@@ -47,6 +48,17 @@ def menu():
         return True
         
     elif operationID == 4:
+        validationID4 = input("Please enter Admin Password: ")
+        if validateAdmin(validationID4) == True:
+            isValid = True
+            change_AdminPassword(isValid)
+        elif validateAdmin(validationID4) == False:
+            print('Wrong admin password...\nget the Fuck out!')
+        return True
+    
+
+        
+    elif operationID == 5:
         return False
         
     else: 
@@ -58,15 +70,14 @@ def NewpassGenerator(passLength):
     lowerLetterChars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u','v', 'w', 'x', 'y', 'z']
     upperLetterChars = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
     specialChars = ['!', '@', '#', '$', '%', '&', '*']
-    #special64Chars = ['+', '/']
     numberChars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
     newPassWord = ""
     allChars = lowerLetterChars + upperLetterChars + numberChars + specialChars
-    #allChars = ''.join(allChars)
+    
     for i in range(passLength):
         newPassWord = newPassWord + random.choice(allChars)
     print('Your new password is: ' + newPassWord)
-    inFile(encryptionAlgo(newPassWord))
+    inFile(encryptionAlgo(newPassWord), dataBase_Dest)
     print('your password have been encrypted!')
     
     
@@ -76,11 +87,11 @@ def encryptionAlgo(password):
     encodedPass = base64.b64encode(passBytes)
     return encodedPass
 
-def inFile(encoded_Data):
-       fileOpen = open(dataBase_Dest, "a")
-       fileOpen.write(str(encoded_Data) + '\n')
-       fileOpen.close() 
-       print('Your Password has been saved!')
+def inFile(encoded_Data, destToFile):
+        fileOpen = open(destToFile, "a")
+        fileOpen.write(str(encoded_Data) + '\n')
+        fileOpen.close() 
+        print('Your Password has been saved!')
  
 
 def decodeFile():
@@ -90,7 +101,7 @@ def decodeFile():
     encryptedData = openFileFrom.read()
     openFileFrom.close()
 
-    sortedData = base_64_b_fix(sortedData)
+    sortedData = base_64_b_fix(encryptedData)
 
     for i in range(len(sortedData)):
         decodedPass = base64.b64decode(str(sortedData[i]))
@@ -102,17 +113,17 @@ def decodeFile():
         print(lists[1])
 
 
-def validateAdmin(checkedPass):
+def validateAdmin(validationPass): 
     openedPassFile = open(validationPass_Dest, "r")
-    passFileData = openedPassFile.read()
+    unsortedPassData = openedPassFile.read()
     
     
-    sortedPassData = base_64_b_fix(sortedPassData)
+    sortedPassData = base_64_b_fix(unsortedPassData)
     
     actualPass = str(base64.b64decode(str(sortedPassData).encode("ascii")))
     actualPass = base_64_b_fix(actualPass)
     
-    if actualPass[0] == str(checkedPass):
+    if actualPass[0] == validationPass:
         return True
     else: 
         return False
@@ -129,6 +140,13 @@ def base_64_b_fix(list_to_clear):
     
 def eraseDataFile():
     open(dataBase_Dest, "w").close()
+
+def change_AdminPassword(isValidated):
+    if isValidated == True:
+        newPass = input("Please enter a new Admin Password: ")
+        encryptedPass = encryptionAlgo(newPass)
+        dataFile = open(validationPass_Dest, 'w')
+        dataFile.write(str(encryptedPass))
 
 if __name__ == '__main__':
     main()
