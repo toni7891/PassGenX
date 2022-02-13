@@ -1,6 +1,6 @@
 # PassGenX - A program to generate passwords and keep them safe.
 
-# Importing library's 
+# Imported library's 
 import random
 import base64
 
@@ -11,7 +11,10 @@ validationPass_Dest = r"C:\Users\Tony\Desktop\passGen PROJECT\Admin.txt"
 
 
 def main():
-    menu()
+    keepAlive = True
+    while keepAlive == True:
+        keepAlive = menu()
+        
     
 
    
@@ -22,12 +25,14 @@ def menu():
     1- Create new Pass    
     2- See existing Passwords
     3- Erase Data file
+    4- Exit
     Your choice: """
     operationID = int(input(menuMassage))
     
     if operationID == 1:
         newPassLength = int(input("Please enter password length: "))
         NewpassGenerator(newPassLength)
+        return True
     
     elif operationID == 2:
         validationID = input("Please enter Admin Password: ")
@@ -35,9 +40,14 @@ def menu():
             decodeFile()
         elif validateAdmin(validationID) == False:
             print('Wrong admin password...\nget the Fuck out!')
+        return True
         
     elif operationID == 3:
         eraseDataFile()
+        return True
+        
+    elif operationID == 4:
+        return False
         
     else: 
         print("There is no such Operation ID...")        
