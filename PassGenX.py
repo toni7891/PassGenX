@@ -57,7 +57,6 @@ Welcome to PassGenX!
         return True
     
 
-        
     elif operationID == 5:
         return False
         
@@ -79,19 +78,19 @@ def NewpassGenerator(passLength):
     print('Your new password is: ' + newPassWord)
     inFile(encryptionAlgo(newPassWord), dataBase_Dest)
     print('your password have been encrypted!')
-    
+    print('Your Password has been saved!')
     
        
 def encryptionAlgo(password):
     passBytes = password.encode('ascii')
     encodedPass = base64.b64encode(passBytes)
+
     return encodedPass
 
 def inFile(encoded_Data, destToFile):
         fileOpen = open(destToFile, "a")
         fileOpen.write(str(encoded_Data) + '\n')
         fileOpen.close() 
-        print('Your Password has been saved!')
  
 
 def decodeFile():
@@ -125,6 +124,7 @@ def validateAdmin(validationPass):
     
     if actualPass[0] == validationPass:
         return True
+    
     else: 
         return False
 
@@ -140,6 +140,7 @@ def base_64_b_fix(list_to_clear):
     
 def eraseDataFile():
     open(dataBase_Dest, "w").close()
+    print('Data Base file has been erased! ')
 
 def change_AdminPassword(isValidated):
     if isValidated == True:
@@ -147,6 +148,7 @@ def change_AdminPassword(isValidated):
         encryptedPass = encryptionAlgo(newPass)
         dataFile = open(validationPass_Dest, 'w')
         dataFile.write(str(encryptedPass))
+        print('Admin Password has been changed successfully! ')
 
 if __name__ == '__main__':
     main()
