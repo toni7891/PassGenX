@@ -80,7 +80,6 @@ def decodeFile():
     encryptedData = openFileFrom.read()
     openFileFrom.close()
 
-    sortedData = encryptedData.split("'")
     sortedData = base_64_b_fix(sortedData)
 
     for i in range(len(sortedData)):
@@ -97,11 +96,10 @@ def validateAdmin(checkedPass):
     openedPassFile = open(validationPass_Dest, "r")
     passFileData = openedPassFile.read()
     
-    sortedPassData = passFileData.split("'")
+    
     sortedPassData = base_64_b_fix(sortedPassData)
     
     actualPass = str(base64.b64decode(str(sortedPassData).encode("ascii")))
-    actualPass = actualPass.split("'")
     actualPass = base_64_b_fix(actualPass)
     
     if actualPass[0] == str(checkedPass):
@@ -111,11 +109,12 @@ def validateAdmin(checkedPass):
 
 
 def base_64_b_fix(list_to_clear):
+    list_to_clear = list_to_clear.split("'")
     list_to_clear = list(filter(lambda a: a != 'b', list_to_clear))
     list_to_clear = list(filter(lambda a: a != '\nb', list_to_clear))
     list_to_clear = list(filter(lambda a: a != '\n', list_to_clear))
-    list_to_clear = list(filter(lambda a: a != '', list_to_clear))
-    return list_to_clear
+    cleanedList = list(filter(lambda a: a != '', list_to_clear))
+    return cleanedList
     
     
 def eraseDataFile():
