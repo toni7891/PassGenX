@@ -14,10 +14,9 @@ userPath = 'C:\\Users\\Tony\\Desktop\\passGen PROJECT\\userList\\'
 
 def main():
     #keepAlive = True
-    #username = 
     user = userChoice()
-    """while keepAlive == True and user != False:
-        keepAlive = menu()"""
+    while keepAlive == True and user != False:
+        keepAlive = menu()
         
     
 def userChoice():
@@ -30,13 +29,11 @@ def userChoice():
         #check is username in DataBase:
         if str(sortedUserList[i]) == str(userPath + userNameInput + '\\'):
             #check User Pass:
+            
             newPassPath = str(userPath + userNameInput + '\\pass.txt')
-            print(newPassPath)
-            userPass = input("Please enter " + userNameInput + " Password: ")
-            print(userPass)
+            userPass = input("    Please enter " + userNameInput + " Password: ")
+
             realPass = decryptUserPass(newPassPath)
-            print(userPass)
-            print(realPass[0])
             if userPass == realPass[0]:
                 return userNameInput
 
