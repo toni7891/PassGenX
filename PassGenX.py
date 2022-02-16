@@ -1,7 +1,6 @@
 # PassGenX - A program to generate passwords and keep them safe.
 
 # Imported library's 
-from pickle import FALSE
 import random
 import base64
 import glob
@@ -13,10 +12,10 @@ username_Dest = r"C:\Users\Tony\Desktop\passGen PROJECT\userList"
 userPath = 'C:\\Users\\Tony\\Desktop\\passGen PROJECT\\userList\\'
 
 def main():
-    #keepAlive = True
+    keepAlive = True
     user = userChoice()
     while keepAlive == True and user != False:
-        keepAlive = menu()
+        keepAlive = menu(user)
         
     
 def userChoice():
@@ -52,7 +51,7 @@ def decryptUserPass(passPath):
     return actualUserPass
     
     
-def menu():
+def menu(user):
     userChoiceMenu = """Welcome to PassGenX!
     please enter your username: """
     menuMassage = """
@@ -64,6 +63,8 @@ def menu():
     5- Exit
     Your choice: """
     operationID = int(input(menuMassage))
+    
+    #todo -----> add multiuser functions to all operations!
     
     if operationID == 1:
         newPassLength = int(input("Please enter password length: "))
@@ -79,10 +80,12 @@ def menu():
         return True
         
     elif operationID == 3:
+        #add only active user DB erase!
         eraseDataFile()
         return True
         
     elif operationID == 4:
+        #change to user change pass!
         validationID4 = input("Please enter Admin Password: ")
         if validateAdmin(validationID4) == True:
             isValid = True
@@ -101,15 +104,17 @@ def menu():
     
 
 def NewpassGenerator(passLength):
+    # possible symbol selection by absolute random 
     lowerLetterChars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u','v', 'w', 'x', 'y', 'z']
     upperLetterChars = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
     specialChars = ['!', '@', '#', '$', '%', '&', '*']
     numberChars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
     newPassWord = ""
+    
     allChars = lowerLetterChars + upperLetterChars + numberChars + specialChars
     
     for i in range(passLength):
-        newPassWord = newPassWord + random.choice(allChars)
+        newPassWord += random.choice(allChars)
     print('Your new password is: ' + newPassWord)
     inFile(encryptionAlgo(newPassWord), dataBase_Dest)
     print('your password have been encrypted!')
