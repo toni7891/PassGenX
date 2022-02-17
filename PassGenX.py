@@ -14,26 +14,28 @@ userPath = 'C:\\Users\\Tony\\Desktop\\passGen PROJECT\\userList\\'
 def main():
     keepAlive = True
     user = userChoice()
-    while keepAlive == True and user != False:
+    while keepAlive == True or user != False:
         keepAlive = menu(user)
         
-    
+
+# Menu to choose user to get particular user password DB.
 def userChoice():
     userNameInput = input("""Welcome to PassGenX!
     please enter your username: """)
+    
+    #Getting all users path's.
     allUsers = glob.glob(username_Dest + "/**/", recursive = True)
     sortedUserList = sortUsers(allUsers)
 
     for i in range(len(sortedUserList)):
-        #check is username in DataBase:
+        #check is user exists:
         if str(sortedUserList[i]) == str(userPath + userNameInput + '\\'):
-            #check User Pass:
-            
+            #check User Password:
             newPassPath = str(userPath + userNameInput + '\\pass.txt')
             userPass = input("    Please enter " + userNameInput + " Password: ")
 
-            realPass = decryptUserPass(newPassPath)
-            if userPass == realPass[0]:
+            truePass = decryptUserPass(newPassPath)
+            if userPass == truePass[0]:
                 return userNameInput
 
             else:
@@ -52,8 +54,6 @@ def decryptUserPass(passPath):
     
     
 def menu(user):
-    userChoiceMenu = """Welcome to PassGenX!
-    please enter your username: """
     menuMassage = """
     Please select what operation do you want to execute:
     1- Create new Pass    
